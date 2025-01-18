@@ -1,5 +1,4 @@
 import javax.swing.*;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,7 +21,7 @@ public class NumberGuessingGameGUI extends JFrame {
     public NumberGuessingGameGUI() {
         setTitle("Number Guessing Game");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(400, 200);
+        setSize(600, 200);
         setLayout(new BorderLayout());
 
         // Create components
@@ -56,7 +55,7 @@ public class NumberGuessingGameGUI extends JFrame {
 
                     if (guess == secretNumber) {
                         messageLabel.setText("Congratulations! You guessed the number in " + (maxAttempts - attemptsLeft + 1) + " attempts.");
-                        score += attemptsLeft + 1; 
+                        score += attemptsLeft + 1;
                         scoreLabel.setText("Score: " + score);
                         guessField.setText("");
 
@@ -107,28 +106,43 @@ public class NumberGuessingGameGUI extends JFrame {
                     if (attemptsLeft == 0) {
                         messageLabel.setText("Sorry, you've reached the maximum number of attempts. The number was: " + secretNumber);
                         guessField.setText("");
-                        if (currentRound < rounds) {
-                            currentRound++;
-                            startRound();
-                        } else {
-                            // Display "Do you want to replay?" popup
-                            int replayOption = JOptionPane.showConfirmDialog(
-                                    null,
-                                    "Game Over! Your final score is: " + score + "\nDo you want to replay?",
-                                    "Game Over",
-                                    JOptionPane.YES_NO_OPTION,
-                                    JOptionPane.INFORMATION_MESSAGE
-                            );
 
-                            if (replayOption == JOptionPane.YES_OPTION) {
-                                // Reset game state for replay
-                                currentRound = 1;
-                                score = 0;
-                                scoreLabel.setText("Score: 0");
+                        // Display "Do you want to play another round?" popup
+                        int replayOption = JOptionPane.showConfirmDialog(
+                                null,
+                                "Round " + currentRound + " over. You've reached the maximum attempts. " +
+                                        "Do you want to play another round?",
+                                "Round Over",
+                                JOptionPane.YES_NO_OPTION,
+                                JOptionPane.INFORMATION_MESSAGE
+                        );
+
+                        if (replayOption == JOptionPane.YES_OPTION) {
+                            if (currentRound < rounds) {
+                                currentRound++;
                                 startRound();
                             } else {
-                                System.exit(0); // Quit the game
+                                // Display "Do you want to replay?" popup
+                                replayOption = JOptionPane.showConfirmDialog(
+                                        null,
+                                        "Game Over! Your final score is: " + score + "\nDo you want to replay?",
+                                        "Game Over",
+                                        JOptionPane.YES_NO_OPTION,
+                                        JOptionPane.INFORMATION_MESSAGE
+                                );
+
+                                if (replayOption == JOptionPane.YES_OPTION) {
+                                    // Reset game state for replay
+                                    currentRound = 1;
+                                    score = 0;
+                                    scoreLabel.setText("Score: 0");
+                                    startRound();
+                                } else {
+                                    System.exit(0); // Quit the game
+                                }
                             }
+                        } else {
+                            System.exit(0); // Quit the game
                         }
                     }
 
@@ -149,6 +163,10 @@ public class NumberGuessingGameGUI extends JFrame {
         guessField.setText("");
     }
 
+    public static void main(String[] args) {
+        new NumberGuessingGameGUI();
+    }
+}
     public static void main(String[] args) {
         new NumberGuessingGameGUI();
     }
